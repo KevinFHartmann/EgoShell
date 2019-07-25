@@ -1,0 +1,7 @@
+#!/bin/sh
+set -x
+name=$1
+description=${2:-${name}}
+status=${3:-APPROVED}
+url=${EGO_URL:-localhost:9082}
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' --header 'Authorization: $AUTH' -d "{ \"description\": \"$description\",  \"name\": \"$name\", \"status\": \"$status\" }" "$url/groups"

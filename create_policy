@@ -1,0 +1,3 @@
+#!/bin/sh
+name=$1
+curl -H "Authorization: $AUTH" -H "Content-type: application/json" http://localhost:9082/policies -d "{ \"name\": \"$name\" }"

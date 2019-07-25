@@ -1,0 +1,5 @@
+#!/bin/sh
+#set -x
+name=$1
+type=${2:-policies}
+curl -s -X GET --header 'Accept: application/json' --header "Authorization:$AUTH" "http://localhost:9082/${type}?query=$name" | jq -r ".resultSet[] | if .name==\"$name\" then .id else empty end"

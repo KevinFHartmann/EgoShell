@@ -1,0 +1,4 @@
+#!/bin/sh
+#set -x
+type=$1
+curl -s -X GET --header 'Accept: application/json' --header "Authorization:$AUTH" "http://localhost:9082/${type}" | jq -r .resultSet[].name

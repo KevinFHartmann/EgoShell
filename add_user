@@ -1,0 +1,17 @@
+#!/bin/sh
+group=$1
+name=$2
+
+user_id=$(./find_id $name users)
+if [ -z "$user_id" ]; then
+   echo "Can't find any users with name $name"
+   exit
+fi
+
+group_id=$(./find_id $group groups)
+if [ -z "$group_id" ]; then
+   echo "Can't find any groups with name $name"
+   exit
+fi
+
+curl -s --header 'Content-Type: application/json' --header 'Accept: application/json' --header "Authorization:$AUTH" "http://localhost:9082/groups/$group_id/users" -d "[ \"$user_id\" ]" | jq -r .

@@ -1,0 +1,23 @@
+#!/bin/sh
+#set -x
+scope=$1
+group=$2
+type=${3:-groups} # vs users 
+
+policy=${scope%.*}
+mask=${scope#*.}
+policy_id=$(./find_id $policy policies) 
+group_id=$(./find_id $group groups)
+
+if [ -z $policy_id ];then
+   echo "creating policy $policy"
+   policy_id=$(./create_policy $policy | jq -r .id)
+fi
+
+if [ -z $group_id ]; then
+   echo "creating group $group"
+   group_id=$(./create_group $group | jq -r .id)
+fi
+
+url=${EGO_URL:-localhost:9082}
+curl -s -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' --header 'Authorization: $AUTH' -d "{ \"mask\": \"$mask\" }" "$url/policies/$policy_id/permission/group/${group_id}"
