@@ -1,0 +1,5 @@
+#!/bin/sh
+client_id=$1
+client_secret=$2
+authToken="Bearer $(/bin/echo -n ${client_id}:${client_secret} | base64)"
+echo $authToken

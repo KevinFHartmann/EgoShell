@@ -34,16 +34,17 @@ the **EGO_URL** to the url of your Ego server.
 
 (4) If you're not running on a Mac, change the **BROWSER_COMMAND** setting from "open" to whatever command you use to run your web browser from the command line
 
-# What other programs do I need have installed?
+# What other programs do I need?
 - ego (of course!)
 - curl
 - jq
 - nc
-- sh
-- cut 
+- cut
 - sleep
+- base64
+- sh
 
-You might need to install **jq** -- most UNIX systems already have the other programs installed. 
+Almost every modern UNIX system will already  have these, except possibly *jq*. You can download *jq* from it's home page [here](https://stedolan.github.io/jq/).
 
 # How do I run it?
 (1) Run **./google.login**, and wait for a browser window to open up, with google
@@ -85,15 +86,16 @@ Other things to try:
 
 # What files do these programs create?
 
-- google.html (contains the Google login page )
-- results ( temporary file )
-- tokens ( temporary file )
+Just one: */tmp/EgoShell.html*.  (It contains the Google login page that you use to sign in with)
 
-# What other files do these programs rely on?
-- msg ( HTTP reply message for our browser  )
+If you don't like the name, you can change the value of **TEMP_FILE** in your *config* file. 
+
+
 
 # How long did you spend writing and testing this?
 
-I wrote it all late last night. There are probably bugs and edge cases to solve. It's still very much a work in progress -- but it works well enough that I find it useful. Perhaps you will, too! 
+I wrote it all late last night. I've worked on it for a few hours since then.
+
+ There are probably bugs and edge cases to solve. It's still very much a work in progress -- but it works well enough that I find it useful. Perhaps you will, too! 
 
 

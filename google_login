@@ -1,22 +1,33 @@
 #!/bin/sh
-# load all of the following environment variables 
-# CLIENT_ID, CLIENT_SECRET, LOCAL_PORT, EMAIL, EGO_URL, BROWSER_COMMAND
+# Load all of the following environment variables from the config
+# CLIENT_ID, CLIENT_SECRET, LOCAL_PORT, EMAIL, EGO_URL, BROWSER_COMMAND,
+# TEMP_FILE
 . config
 
-token=$(genAuthToken ${CLIENT_ID} ${CLIENT_SECRET})
-curl -s -L -H "Authorization: $token" "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=email%20profile&client_id=${CLIENT_ID}&login_hint=${EMAIL}&redirect_uri=http://localhost:${LOCAL_PORT}" > google.html
-${BROWSER_COMMAND} google.html
+token=$(./genAuthToken ${CLIENT_ID} ${CLIENT_SECRET})
+
+curl -s -L -H "Authorization: $token" "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=email%20profile&client_id=${CLIENT_ID}&login_hint=${EMAIL}&redirect_uri=http://localhost:${LOCAL_PORT}" > ${TEMP_FILE} 
+
+${BROWSER_COMMAND} ${TEMP_FILE}
 
 # Listen for the reply  
-nc -l ${LOCAL_PORT} < msg > results 
+code=`cat <<EOT | nc -l ${LOCAL_PORT} | head -n1 | cut -d? -f2 | cut -d'&' -f1
+HTTP/1.1 200 OK
+Content-Type: text/plain
 
-code=$(head -n1 results | cut -d? -f2 | cut -d'&' -f1 )
+Ok.
+EOT
+`
+# delete our temp file, now that we're done
+if [ -e ${TEMP_FILE} ]; then rm ${TEMP_FILE};fi
+
 nc -l ${LOCAL_PORT} & # set-up another listener
 sleep 1 # wait for it to start
 
-curl -s https://www.googleapis.com/oauth2/v4/token -d "$code" -d "grant_type=authorization_code" -d "client_id=${CLIENT_ID}" -d "client_secret=${CLIENT_SECRET}" -d "redirect_uri=http://localhost:${LOCAL_PORT}" > tokens 
-id_token=$(jq -r .id_token tokens) 
-access_token=$(jq -r .access_token tokens)
+tokens=$(curl -s https://www.googleapis.com/oauth2/v4/token -d "$code" -d "grant_type=authorization_code" -d "client_id=${CLIENT_ID}" -d "client_secret=${CLIENT_SECRET}" -d "redirect_uri=http://localhost:${LOCAL_PORT}")
+
+id_token=$(jq -r .id_token <<< $tokens) 
+access_token=$(jq -r .access_token <<< $tokens)
 ego_token=$(curl -s "${EGO_URL}/oauth/google/token" -H"Token: $id_token")
 echo
 echo "Your ego token is below this line"
