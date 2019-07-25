@@ -1,9 +1,8 @@
 #!/bin/sh
-#set -x
 name=$1
 policy_id=$(./find_id $name policies) 
 echo "groups";echo "--"
-curl -s -X GET --header 'Accept: application/json' --header "Authorization:$AUTH" "http://localhost:9082/policies/${policy_id}/groups" | jq .
+curl -s -X GET --header 'Accept: application/json' --header "Authorization:$AUTH" "${EGO_URL}/policies/${policy_id}/groups" | jq .
 echo
 echo "users";echo "--"
-curl -s -X GET --header 'Accept: application/json' --header "Authorization:$AUTH" "http://localhost:9082/policies/${policy_id}/users" | jq .
+curl -s -X GET --header 'Accept: application/json' --header "Authorization:$AUTH" "${EGO_URL}/policies/${policy_id}/users" | jq .

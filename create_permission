@@ -1,5 +1,4 @@
 #!/bin/sh
-#set -x
 scope=$1
 group=$2
 type=${3:-groups} # vs users 

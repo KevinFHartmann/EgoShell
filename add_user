@@ -14,4 +14,4 @@ if [ -z "$group_id" ]; then
    exit
 fi
 
-curl -s --header 'Content-Type: application/json' --header 'Accept: application/json' --header "Authorization:$AUTH" "http://localhost:9082/groups/$group_id/users" -d "[ \"$user_id\" ]" | jq -r .
+curl -s --header 'Content-Type: application/json' --header 'Accept: application/json' --header "Authorization:$AUTH" "${EGO_URL}/groups/$group_id/users" -d "[ \"$user_id\" ]" | jq -r .

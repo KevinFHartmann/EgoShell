@@ -29,18 +29,21 @@ Google will then generate a **client_id** and **client_secret** for you that you
      
 (2) Set up your Ego server, and configure it with the *client id* that you just got.
 
-(3) Edit the script **google.login** and set the correct values in the variables **client_id** and **client_secret**. 
+(3) Edit the file called **config** and set the correct values in the variables **CLIENT_ID** and **CLIENT_SECRET**, and
+the **EGO_URL** to the url of your Ego server.
 
 (4) If you're not running on a Mac, change the **BROWSER_COMMAND** setting from "open" to whatever command you use to run your web browser from the command line
 
-# What other programs do I need to install?
+# What other programs do I need have installed?
 - ego (of course!)
 - curl
 - jq
 - nc
 - sh
-- bash
+- cut 
+- sleep
 
+You might need to install **jq** -- most UNIX systems already have the other programs installed. 
 
 # How do I run it?
 (1) Run **./google.login**, and wait for a browser window to open up, with google

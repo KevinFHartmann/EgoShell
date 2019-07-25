@@ -1,5 +1,4 @@
 #!/bin/sh
-#set -x
 name=$1
 type=${2:-groups}
 id=$(./find_id $name $type)
@@ -7,5 +6,5 @@ id=$(./find_id $name $type)
 if [ -z "$id" ]; then
    echo "Can't find any $type with name $name"
 else
-   curl -s -X DELETE --header 'Accept: application/json' --header "Authorization:$AUTH" "http://localhost:9082/${type}/$id" | jq -r .
+   curl -s -X DELETE --header 'Accept: application/json' --header "Authorization:$AUTH" "${EGO_URL}/${type}/$id" | jq -r .
 fi

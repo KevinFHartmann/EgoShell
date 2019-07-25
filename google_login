@@ -1,28 +1,27 @@
-#!/bin/bash
-#set -x
-client_id=550266265671-v7gjuh5sthsarkb80v4mfsdmo7fbct7l.apps.googleusercontent.com
-client_secret=354Ej-FjdCwwtNiQUNq8wN73
-local_port=12345
-email="khartmann@oicr.on.ca"
-ego_url="http://localhost:9082"
-BROWSER_COMMAND=open
+#!/bin/sh
+# load all of the following environment variables 
+# CLIENT_ID, CLIENT_SECRET, LOCAL_PORT, EMAIL, EGO_URL, BROWSER_COMMAND
+. config
 
-token=$(genAuthToken $client_id $client_secret)
-curl -s -L -H "Authorization: $token" "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=email%20profile&client_id=$client_id&login_hint=$email&redirect_uri=http://localhost:$local_port" > google.html
+token=$(genAuthToken ${CLIENT_ID} ${CLIENT_SECRET})
+curl -s -L -H "Authorization: $token" "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=email%20profile&client_id=${CLIENT_ID}&login_hint=${EMAIL}&redirect_uri=http://localhost:${LOCAL_PORT}" > google.html
 ${BROWSER_COMMAND} google.html
+
 # Listen for the reply  
-nc -l $local_port < msg > results 
+nc -l ${LOCAL_PORT} < msg > results 
+
 code=$(head -n1 results | cut -d? -f2 | cut -d'&' -f1 )
-nc -l $local_port & # set-up another listener
+nc -l ${LOCAL_PORT} & # set-up another listener
 sleep 1 # wait for it to start
-curl -s https://www.googleapis.com/oauth2/v4/token -d "$code" -d "grant_type=authorization_code" -d "client_id=$client_id" -d "client_secret=$client_secret" -d "redirect_uri=http://localhost:$local_port" > tokens 
+
+curl -s https://www.googleapis.com/oauth2/v4/token -d "$code" -d "grant_type=authorization_code" -d "client_id=${CLIENT_ID}" -d "client_secret=${CLIENT_SECRET}" -d "redirect_uri=http://localhost:${LOCAL_PORT}" > tokens 
 id_token=$(jq -r .id_token tokens) 
 access_token=$(jq -r .access_token tokens)
-ego_token=$(curl -s "${ego_url}/oauth/google/token" -H"Token: $id_token")
+ego_token=$(curl -s "${EGO_URL}/oauth/google/token" -H"Token: $id_token")
 echo
 echo "Your ego token is below this line"
 echo "---------------------------------"
 echo "Bearer $ego_token"
-export AUTH="Bearer $ego_token"
-export EGO_URL="$ego_url"
-bash
+AUTH="Bearer $ego_token"
+export AUTH EGO_URL
+sh
