@@ -1,0 +1,8 @@
+#!/bin/sh
+name=$1
+id=$(./find_id $name users)
+if [ -z "$id" ]; then
+   echo "Can't find any $type with name $name"
+else
+   curl -s -X PUT -H 'Content-type: application/json' --header 'Accept: application/json' --header "Authorization:$AUTH" "${EGO_URL}/users/$id" -d "{ \"type\": \"ADMIN\" }" | jq -r .
+fi

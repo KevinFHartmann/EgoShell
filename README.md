@@ -78,10 +78,11 @@ Other things to try:
 % ./list users
 % ./list groups
 % ./list_permissions <policy_name>
-% ./find_id <name> [policies|users|groups|permissions] 
-% ./get <name> [policies|users|groups]
+% ./find_id <user_email|name> [policies|users|groups|permissions] 
+% ./get <user_email|name> [policies|users|groups]
 % ./delete <name> [policies|users|groups]
-% ./add_user <group_name> <user_name> 
+% ./grant_admin <user_email>
+% ./add_user <group_name> <user_email> 
 ```
 
 # What files do these programs create?
