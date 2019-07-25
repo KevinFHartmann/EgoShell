@@ -1,0 +1,6 @@
+CLIENT_ID= <your client id from google goes here>
+CLIENT_SECRET= <your client secret from google goes here>
+LOCAL_PORT=12345
+EMAIL="khartmann@oicr.on.ca" # this seems to be ignored
+EGO_URL="http://localhost:9082"
+BROWSER_COMMAND=open # works for Mac. Replace as required with whatever you use. 
