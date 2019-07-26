@@ -23,7 +23,7 @@ Go to *Credentials*, then *Create OAuth client ID*.
 
 Select **application type** *web application*.
 
-Enter *http://localhost:1235* under **Authorized redirect URLs**.
+Enter *http://localhost:12345* under **Authorized redirect URLs**.
  
 Google will then generate a **client_id** and **client_secret** for you that you can use to let someone log in to your Ego server google email password.
      
@@ -47,14 +47,14 @@ the **EGO_URL** to the url of your Ego server.
 Almost every modern UNIX system will already  have these, except possibly *jq*. You can download *jq* from it's home page [here](https://stedolan.github.io/jq/).
 
 # How do I run it?
-(1) Run **./google.login**, and wait for a browser window to open up, with google
+(1) Run **./google_login**, and wait for a browser window to open up, with google
 Oauth login page.  
 
 (2) In your web browser, log in with your google email and password. 
 
 (3) You'll see a small page that says "ok" at the top if the login was successful.
 
-(4) Back in your shell window, google.login will display ego authorization
+(4) Back in your shell window, google_login will display ego authorization
 token, then launch a new shell with your authorization token set to the
 environment variable **AUTH**. 
 
