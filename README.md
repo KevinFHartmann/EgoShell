@@ -82,6 +82,7 @@ Other things to try:
 % ./get <user_email|name> [policies|users|groups]
 % ./delete <name> [policies|users|groups]
 % ./grant_admin <user_email>
+% ./revoke_admin <user_email>
 % ./add_user <group_name> <user_email> 
 ```
 
@@ -91,12 +92,8 @@ Just one: */tmp/EgoShell.html*.  (It contains the Google login page that you use
 
 If you don't like the name, you can change the value of **TEMP_FILE** in your *config* file. 
 
-
-
 # How long did you spend writing and testing this?
 
 I wrote it all late last night. I've worked on it for a few hours since then.
 
  There are probably bugs and edge cases to solve. It's still very much a work in progress -- but it works well enough that I find it useful. Perhaps you will, too! 
-
-
