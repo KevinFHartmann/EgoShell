@@ -27,12 +27,14 @@ sleep 1 # wait for it to start
 tokens=$(curl -s https://www.googleapis.com/oauth2/v4/token -d "$code" -d "grant_type=authorization_code" -d "client_id=${CLIENT_ID}" -d "client_secret=${CLIENT_SECRET}" -d "redirect_uri=http://localhost:${LOCAL_PORT}")
 
 id_token=$(jq -r .id_token <<< $tokens) 
+echo "id_token is $id_token"
 access_token=$(jq -r .access_token <<< $tokens)
+echo "access_token is $access_token"
 ego_token=$(curl -s "${EGO_URL}/oauth/google/token" -H"Token: $id_token")
 echo
 echo "Your ego token is below this line"
 echo "---------------------------------"
 echo "Bearer $ego_token"
 AUTH="Bearer $ego_token"
-export AUTH EGO_URL
+export AUTH EGO_URL id_token access_token
 sh

@@ -1,0 +1,10 @@
+#!/bin/sh
+group=$1
+
+group_id=$(./find_id $group groups)
+
+if [ -z $group_id ]; then
+   echo "No such group $group"
+fi
+url=${EGO_URL:-localhost:9082}
+curl -s -X GET --header 'Accept: application/json' --header "Authorization: $AUTH" "$url/groups/${group_id}/users" | jq . -r
